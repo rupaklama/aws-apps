@@ -41,15 +41,33 @@ export class CdkAppStack extends cdk.Stack {
     // note: On all Constructs, need to pass 'scope' as first arg with 'this' to point to current cdk Stack
     // that way constructs or resources will belong to the current cdk stack.
 
+    // note: CDK Deployment parameters - passing extra data on deployment
+    const duration = new cdk.CfnParameter(this, "duration", {
+      // setting default value for duration
+      default: 6,
+      minValue: 1,
+      maxValue: 10,
+      // note: First letter of Type needs to be defined in Uppercase
+      type: "Number",
+    });
+
     // S3 Construct: create S3 bucket 3 ways
     // L2 Construct: Most popular & common way to create Construct(resource)
-    new Bucket(this, "MyL2Bucket", {
+    const myL2Bucket = new Bucket(this, "MyL2Bucket", {
       // Config for files to be deleted in this bucket after expire time
       lifecycleRules: [
         {
-          expiration: cdk.Duration.days(3),
+          // expiration: cdk.Duration.days(3),
+          expiration: cdk.Duration.days(duration.valueAsNumber),
         },
       ],
+    });
+
+    // note: Cloudformation Outputs is to query details about the cdk stack for other use cases
+    // a great way to share information that is store between stacks and aws resources
+    new cdk.CfnOutput(this, "MyL2BucketName", {
+      // note: this will be created & added into the 'Outputs' of CdkAppStack in aws console
+      value: myL2Bucket.bucketName,
     });
 
     // L3 Construct instance being created by L3 Construct class above
