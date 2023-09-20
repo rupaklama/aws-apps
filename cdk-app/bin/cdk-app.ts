@@ -13,7 +13,13 @@ const app = new cdk.App();
 
 // NOTE: The original/parent stack needs to deploy first manually since CDK deploys in
 // an alphabetical order which will create an issues on deployment.
+// NOTE: This won't happen when sharing resources with CDK props like below
 
 // new CdkAppStack(app, "CdkAppStack", {});
-new PhotosStack(app, "PhotosStack");
-new PhotosHandlerStack(app, "PhotosHandlerStack");
+const photosStack = new PhotosStack(app, "PhotosStack");
+
+new PhotosHandlerStack(app, "PhotosHandlerStack", {
+  // note: Sharing resources with CDK props, better option
+  // this new prop will hold the share data
+  targetBucketARN: photosStack.photosBucketARN,
+});
