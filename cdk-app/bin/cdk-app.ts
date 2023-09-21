@@ -4,6 +4,7 @@ import * as cdk from "aws-cdk-lib";
 import { CdkAppStack } from "../lib/cdk-app-stack";
 import { PhotosStack } from "../lib/PhotosStack";
 import { PhotosHandlerStack } from "../lib/PhotosHandlerStack";
+import { BucketTagger } from "./Tagger";
 
 /* cdk instance to initialize our application */
 
@@ -20,6 +21,11 @@ const photosStack = new PhotosStack(app, "PhotosStack");
 
 new PhotosHandlerStack(app, "PhotosHandlerStack", {
   // note: Sharing resources with CDK props, better option
-  // this new prop will hold the share data
+  // this new prop will hold the shared data
   targetBucketARN: photosStack.photosBucketARN,
 });
+
+// cdk aspect
+const tagger = new BucketTagger("level", "test");
+// add tags
+cdk.Aspects.of(app).add(tagger);

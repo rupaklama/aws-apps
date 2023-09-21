@@ -3,7 +3,7 @@ import { Code, Function as LambdaFunction, Runtime } from "aws-cdk-lib/aws-lambd
 import { Bucket, CfnBucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 
-// custom interface with additional prop
+// custom interface with additional prop to share data
 interface PhotosHandlerStackProps extends cdk.StackProps {
   targetBucketARN: string;
 }
