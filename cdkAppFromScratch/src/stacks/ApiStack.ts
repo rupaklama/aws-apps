@@ -6,7 +6,7 @@ import { Construct } from "constructs";
 // API Gateway provides tools for creating and documenting web APIs that route HTTP requests to Lambda functions.
 // Using API Gateway provides users with a secure HTTP endpoint to invoke your Lambda function and can help manage large volumes of calls to your function by throttling traffic and automatically validating and authorizing API calls.
 
-// custom interface since this stack will be accessing shared data using cdk props
+// custom interface since this stack will be accessing shared data in Lambda Stack using cdk props
 interface ApiStackProps extends StackProps {
   helloLambdaIntegration: LambdaIntegration;
 }
@@ -15,10 +15,10 @@ export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
-    // Rest api construct
+    // Rest Api construct gateway
     const api = new RestApi(this, "SpacesApi");
     // 'root' - Represents the root resource of this API endpoint ('/').
-    // Resources and Methods are added to this resource.
+    // Resources and Methods are added to this resource '/spaces'
     const spacesResources = api.root.addResource("spaces");
 
     // config to link to our lambda

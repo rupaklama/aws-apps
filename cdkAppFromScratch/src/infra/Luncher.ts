@@ -7,10 +7,12 @@ import { ApiStack } from "../stacks/ApiStack";
 const app = new App();
 
 // Stacks belong to the current cdk app
-new DataStack(app, "DataStack");
+const dataStack = new DataStack(app, "DataStack");
 
 // lambda stack
-const lambdaStack = new LambdaStack(app, "LambdaStack");
+const lambdaStack = new LambdaStack(app, "LambdaStack", {
+  spacesTable: dataStack.spacesTable,
+});
 
 // Using API Gateway provides users with a secure HTTP endpoint to invoke your Lambda function
 // Config to link API Gateway stack to our lambda stack above
