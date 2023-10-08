@@ -8,7 +8,7 @@ import { Construct } from "constructs";
 
 // custom interface since this stack will be accessing shared data in Lambda Stack using cdk props
 interface ApiStackProps extends StackProps {
-  helloLambdaIntegration: LambdaIntegration;
+  spacesLambdaIntegration: LambdaIntegration;
 }
 
 export class ApiStack extends Stack {
@@ -22,6 +22,7 @@ export class ApiStack extends Stack {
     const spacesResources = api.root.addResource("spaces");
 
     // config to link to our lambda
-    spacesResources.addMethod("GET", props.helloLambdaIntegration);
+    spacesResources.addMethod("GET", props.spacesLambdaIntegration);
+    spacesResources.addMethod("POST", props.spacesLambdaIntegration);
   }
 }
