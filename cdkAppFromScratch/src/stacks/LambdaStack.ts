@@ -42,6 +42,17 @@ export class LambdaStack extends Stack {
       },
     });
 
+    // spaces lambda has rights to write db
+    spacesLambda.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        // data from spaces db table
+        resources: [props.spacesTable.tableArn],
+        // actions that this lambda can take on this spaces table
+        actions: ["dynamodb:putItem"],
+      })
+    );
+
     // rights to list s3 buckets
     // spacesLambda.addToRolePolicy(
     //   new PolicyStatement({

@@ -2,4 +2,9 @@ GET https://46a1r3a3hb.execute-api.us-east-1.amazonaws.com/prod/
 ###
 
 POST https://46a1r3a3hb.execute-api.us-east-1.amazonaws.com/prod/
+content-type: application/json
+
+{
+  "location": "New York"
+}
 ###
