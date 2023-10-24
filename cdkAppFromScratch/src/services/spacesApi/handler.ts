@@ -1,14 +1,13 @@
 // note: 'services' dir hosts Lambda Functions
-
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { postSpaces } from "./PostSpaces";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 // note: Very import thing is that when we are working with AWS DynamoDB is that the
 // DynamoDB Client should be initialize in outer scope of http methods as a good practice
 // npm i @aws-sdk/client-dynamodb
 
-// initializing & connecting to DynamoDB here
+// initializing & connecting to DynamoDB here with aws dynamoDB sdk
 const dynamoDBClient = new DynamoDBClient({});
 
 // basic lambda function to deploy using cdk through API gateway

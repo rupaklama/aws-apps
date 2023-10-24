@@ -15,8 +15,10 @@
             "args": [
                 "${relativeFile}"
             ],
+            // to debug aws code
             "env": {
                 "AWS_REGION": "us-east-1",
+                "TABLE_NAME": "SpacesTable"
             }
         }
   ]

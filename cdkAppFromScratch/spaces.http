@@ -1,10 +1,10 @@
-GET https://46a1r3a3hb.execute-api.us-east-1.amazonaws.com/prod/
+GET https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces/
 ###
 
-POST https://46a1r3a3hb.execute-api.us-east-1.amazonaws.com/prod/
-content-type: application/json
+POST https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces/
+Content-Type: application/json
 
 {
-  "location": "New York"
+  "location": "Jersey City"
 }
 ###

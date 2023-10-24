@@ -1,6 +1,8 @@
 // note: 'services' dir hosts Lambda Functions
 
+// note: 'AWS SDK' is to access & interact with AWS Resources eg. S3 resources here
 import { ListBucketsCommand, S3Client } from "@aws-sdk/client-s3";
+
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { v4 } from "uuid";
 
@@ -9,7 +11,7 @@ const s3Client = new S3Client({});
 
 // basic lambda function to deploy using cdk through API gateway
 async function handler(event: APIGatewayProxyEvent, context: Context) {
-  // to see our buckets
+  // to see our buckets list
   const command = new ListBucketsCommand({});
   const listBucketsResult = (await s3Client.send(command)).Buckets;
 

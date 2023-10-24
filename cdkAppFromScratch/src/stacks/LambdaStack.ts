@@ -2,7 +2,7 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Code, Function as LambdaFunction, Runtime } from "aws-cdk-lib/aws-lambda";
+import { Code, Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
@@ -49,7 +49,7 @@ export class LambdaStack extends Stack {
         // data from spaces db table
         resources: [props.spacesTable.tableArn],
         // actions that this lambda can take on this spaces table
-        actions: ["dynamodb:putItem"],
+        actions: ["dynamodb:PutItem"], // post api call
       })
     );
 

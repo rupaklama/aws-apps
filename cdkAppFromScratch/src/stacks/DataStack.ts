@@ -23,7 +23,7 @@ export class DataStack extends Stack {
       },
 
       // table name should be unique so to avoid issues
-      tableName: "SpaceTable",
+      tableName: "SpacesTable",
     });
   }
 }
