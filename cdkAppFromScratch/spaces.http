@@ -8,3 +8,7 @@ Content-Type: application/json
   "location": "Jersey City"
 }
 ###
+
+GET  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces/
+
+###

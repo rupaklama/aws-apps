@@ -2,6 +2,7 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { postSpaces } from "./PostSpaces";
+import { getSpaces } from "./GetSpaces";
 
 // note: Very import thing is that when we are working with AWS DynamoDB is that the
 // DynamoDB Client should be initialize in outer scope of http methods as a good practice
@@ -18,12 +19,14 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
   try {
     switch (event.httpMethod) {
       case "GET":
-        message = "Hello from GET!";
+        // message = "Hello from GET!";
+        const getResponse = getSpaces(event, dynamoDBClient);
+        return getResponse;
         break;
       case "POST":
         // message = "Hello from POST!";
-        const response = postSpaces(event, dynamoDBClient);
-        return response;
+        const postResponse = postSpaces(event, dynamoDBClient);
+        return postResponse;
 
       default:
         break;

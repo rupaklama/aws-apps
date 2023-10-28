@@ -11,11 +11,10 @@ interface SpaceEntry {
 
 // http post api
 async function postSpaces(event: APIGatewayProxyEvent, dynamoDBClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
-  // note: when creating an entry into dynamodb, we need to pass it id since the db is configure that way
+  // note: when creating an entry into dynamodb, we need to pass it 'id' since the db is configure that way
   const randomId = v4;
 
-  // note: we will get our data inside of the 'event'
-  // response body obj from handler.ts
+  // note: we will get our 'request data obj' inside of the 'event'
   const item: SpaceEntry = JSON.parse(event.body);
   item.id = randomId();
 
@@ -42,7 +41,7 @@ async function postSpaces(event: APIGatewayProxyEvent, dynamoDBClient: DynamoDBC
 
   return {
     statusCode: 201,
-    body: JSON.stringify({ id: item.id }),
+    body: JSON.stringify({ id: item.id, location: item.location }),
   };
 }
 
