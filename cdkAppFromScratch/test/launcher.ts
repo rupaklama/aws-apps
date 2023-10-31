@@ -19,6 +19,9 @@ import { handler } from "../src/services/spacesApi/handler";
 handler(
   {
     httpMethod: "GET",
+    queryStringParameters: {
+      id: "10a94822-ad97-4987-a81e-fb2a11210163",
+    },
     // body: JSON.stringify({
     //   location: "San Francisco city",
     // }),

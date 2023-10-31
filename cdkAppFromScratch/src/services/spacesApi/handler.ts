@@ -20,12 +20,12 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
     switch (event.httpMethod) {
       case "GET":
         // message = "Hello from GET!";
-        const getResponse = getSpaces(event, dynamoDBClient);
+        const getResponse = await getSpaces(event, dynamoDBClient);
         return getResponse;
-        break;
+
       case "POST":
         // message = "Hello from POST!";
-        const postResponse = postSpaces(event, dynamoDBClient);
+        const postResponse = await postSpaces(event, dynamoDBClient);
         return postResponse;
 
       default:

@@ -1,25 +1,25 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { v4 } from "uuid";
 
-interface SpaceEntry {
-  id: string;
-  location: string;
-  name: string;
-  photoUrl?: string;
-}
-
 // http post api
-async function postSpaces(event: APIGatewayProxyEvent, dynamoDBClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
+async function postSpacesWithDoc(
+  event: APIGatewayProxyEvent,
+  dynamoDBClient: DynamoDBClient
+): Promise<APIGatewayProxyResult> {
+  // note: using @aws-sdk/lib-dynamodb for api query
+  const ddbDocClient = DynamoDBDocumentClient.from(dynamoDBClient);
+
   // note: when creating an entry into dynamodb, we need to pass it 'id' since the db is configure that way
   const randomId = v4;
 
   // note: we will get our 'request data obj' inside of the 'event'
-  const item: SpaceEntry = JSON.parse(event.body);
+  const item = JSON.parse(event.body);
   item.id = randomId();
 
-  const result = await dynamoDBClient.send(
+  const result = await ddbDocClient.send(
     // 'putItem' - post request api call
     new PutItemCommand({
       // db table
@@ -36,8 +36,7 @@ async function postSpaces(event: APIGatewayProxyEvent, dynamoDBClient: DynamoDBC
       //   },
       // },
 
-      // note: marshall func will add attribute types just like above { S: }
-      Item: marshall(item),
+      Item: item,
     })
   );
 
@@ -49,4 +48,4 @@ async function postSpaces(event: APIGatewayProxyEvent, dynamoDBClient: DynamoDBC
   };
 }
 
-export { postSpaces };
+export { postSpacesWithDoc };

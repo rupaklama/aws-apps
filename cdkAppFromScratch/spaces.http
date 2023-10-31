@@ -9,6 +9,6 @@ Content-Type: application/json
 }
 ###
 
-GET  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces/
+GET  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334343
 
 ###
