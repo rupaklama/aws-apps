@@ -16,15 +16,28 @@ import { handler } from "../src/services/spacesApi/handler";
 //   {} as any
 // );
 
+// handler(
+//   {
+//     httpMethod: "GET",
+//     queryStringParameters: {
+//       id: "10a94822-ad97-4987-a81e-fb2a11210163",
+//     },
+//     // body: JSON.stringify({
+//     //   location: "San Francisco city",
+//     // }),
+//   } as any,
+//   {} as any
+// );
+
 handler(
   {
-    httpMethod: "GET",
+    httpMethod: "PUT",
     queryStringParameters: {
-      id: "10a94822-ad97-4987-a81e-fb2a11210163",
+      id: "69a81e15-5131-4b50-8ec5-4b79a2644267",
     },
-    // body: JSON.stringify({
-    //   location: "San Francisco city",
-    // }),
+    body: JSON.stringify({
+      location: "SF City",
+    }),
   } as any,
   {} as any
 );
