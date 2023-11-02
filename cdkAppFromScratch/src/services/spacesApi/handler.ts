@@ -4,6 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda
 import { postSpaces } from "./PostSpaces";
 import { getSpaces } from "./GetSpaces";
 import { updateSpace } from "./UpdateSpace";
+import { deleteSpace } from "./DeleteSpace";
 
 // note: Very import thing is that when we are working with AWS DynamoDB is that the
 // DynamoDB Client should be initialize in outer scope of http methods as a good practice
@@ -32,6 +33,10 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
       case "PUT":
         const putResponse = await updateSpace(event, dynamoDBClient);
         return putResponse;
+
+      case "DELETE":
+        const deleteResponse = await deleteSpace(event, dynamoDBClient);
+        return deleteResponse;
 
       default:
         break;

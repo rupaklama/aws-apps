@@ -2,13 +2,6 @@ import { DynamoDBClient, GetItemCommand, ScanCommand, UpdateItemCommand } from "
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
-interface SpaceEntry {
-  id: string;
-  location: string;
-  name: string;
-  photoUrl?: string;
-}
-
 // http PUT api for updating an item
 async function updateSpace(
   event: APIGatewayProxyEvent,

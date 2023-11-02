@@ -13,6 +13,10 @@ GET  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334
 
 ###
 
+DELETE   https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334343
+
+###
+
 PUT  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334343
 Content-Type: application/json
 
