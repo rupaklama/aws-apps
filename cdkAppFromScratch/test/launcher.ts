@@ -5,16 +5,18 @@ import { handler } from "../src/services/spacesApi/handler";
 // must be selected while launching vscode debugger.
 // Calling these functions in our project modules to debug here.
 
-// handler(
-//   // post api call
-//   {
-//     httpMethod: "POST",
-//     body: JSON.stringify({
-//       location: "San Francisco city",
-//     }),
-//   } as any,
-//   {} as any
-// );
+handler(
+  // post api call
+  {
+    httpMethod: "POST",
+    body: JSON.stringify({
+      location: "San Francisco city",
+    }),
+  } as any,
+  {} as any
+).then(result => console.log(result));
+
+debugger;
 
 // handler(
 //   {
@@ -42,12 +44,12 @@ import { handler } from "../src/services/spacesApi/handler";
 //   {} as any
 // );
 
-handler(
-  {
-    httpMethod: "DELETE",
-    queryStringParameters: {
-      id: "10a94822-ad97-4987-a81e-fb2a11210163",
-    },
-  } as any,
-  {} as any
-);
+// handler(
+//   {
+//     httpMethod: "DELETE",
+//     queryStringParameters: {
+//       id: "10a94822-ad97-4987-a81e-fb2a11210163",
+//     },
+//   } as any,
+//   {} as any
+// );

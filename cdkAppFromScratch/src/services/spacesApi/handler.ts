@@ -5,6 +5,7 @@ import { postSpaces } from "./PostSpaces";
 import { getSpaces } from "./GetSpaces";
 import { updateSpace } from "./UpdateSpace";
 import { deleteSpace } from "./DeleteSpace";
+import { JSONError, MissingFieldError } from "../shared/DataValidator";
 
 // note: Very import thing is that when we are working with AWS DynamoDB is that the
 // DynamoDB Client should be initialize in outer scope of http methods as a good practice
@@ -43,6 +44,21 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
     }
   } catch (error) {
     console.error("dynamoDB", error);
+
+    if (error instanceof MissingFieldError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(error.message),
+      };
+    }
+
+    if (error instanceof JSONError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(error.message),
+      };
+    }
+
     return {
       statusCode: 500,
       body: JSON.stringify(error.message),

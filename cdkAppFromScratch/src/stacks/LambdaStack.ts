@@ -48,8 +48,14 @@ export class LambdaStack extends Stack {
         effect: Effect.ALLOW,
         // spaces table in dynamoDB
         resources: [props.spacesTable.tableArn],
-        // actions that this lambda can take on this spaces table
-        actions: ["dynamodb:PutItem"], // post api call
+        // actions that spaces lambda can take in db table
+        actions: [
+          "dynamodb:PutItem",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+        ],
       })
     );
 

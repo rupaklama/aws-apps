@@ -5,12 +5,17 @@ POST https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces/
 Content-Type: application/json
 
 {
-  "location": "Jersey City"
+  "location": "Jersey City",
+  "name": "My hometown"
 }
 ###
 
-GET  https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334343
+PUT https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=60b121fe-d87a-476d-ab94-99bc32c4fa56
+Content-Type: application/json
 
+{
+  "My hometown! love it"
+}
 ###
 
 DELETE   https://7t638jsv36.execute-api.us-east-1.amazonaws.com/prod/spaces?id=34334343
