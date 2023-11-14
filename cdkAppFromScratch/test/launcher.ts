@@ -16,8 +16,6 @@ handler(
   {} as any
 ).then(result => console.log(result));
 
-debugger;
-
 // handler(
 //   {
 //     httpMethod: "GET",
