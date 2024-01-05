@@ -1,5 +1,12 @@
 import { Stack, StackProps } from "aws-cdk-lib";
-import { LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
+import {
+  AuthorizationType,
+  CognitoUserPoolsAuthorizer,
+  LambdaIntegration,
+  MethodOptions,
+  RestApi,
+} from "aws-cdk-lib/aws-apigateway";
+import { IUserPool } from "aws-cdk-lib/aws-cognito";
 import { Construct } from "constructs";
 
 // note: this is API Gateway stack to execute our lambda over the internet as a web api endpoint
@@ -9,6 +16,7 @@ import { Construct } from "constructs";
 // custom interface since this stack will be accessing shared data in Lambda Stack using cdk props
 interface ApiStackProps extends StackProps {
   spacesLambdaIntegration: LambdaIntegration;
+  userPool: IUserPool;
 }
 
 export class ApiStack extends Stack {
@@ -17,14 +25,29 @@ export class ApiStack extends Stack {
 
     // Rest Api construct gateway
     const api = new RestApi(this, "SpacesApi");
+
+    // auth protected route: securing APIs with Cognito
+    const authorizer = new CognitoUserPoolsAuthorizer(this, "SpacesApiAuthorizer", {
+      cognitoUserPools: [props.userPool],
+      identitySource: "method.request.header.Authorization",
+    });
+    authorizer._attachToApi(api);
+
+    const optionsWithAuth: MethodOptions = {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.authorizerId,
+      },
+    };
+
     // 'root' - Represents the root resource of this API endpoint ('/').
     // Resources and Methods are added to this resource '/spaces'
     const spacesResources = api.root.addResource("spaces");
 
     // config to link to our lambda
-    spacesResources.addMethod("GET", props.spacesLambdaIntegration);
-    spacesResources.addMethod("POST", props.spacesLambdaIntegration);
-    spacesResources.addMethod("PUT", props.spacesLambdaIntegration);
-    spacesResources.addMethod("DELETE", props.spacesLambdaIntegration);
+    spacesResources.addMethod("GET", props.spacesLambdaIntegration, optionsWithAuth);
+    spacesResources.addMethod("POST", props.spacesLambdaIntegration, optionsWithAuth);
+    spacesResources.addMethod("PUT", props.spacesLambdaIntegration, optionsWithAuth);
+    spacesResources.addMethod("DELETE", props.spacesLambdaIntegration, optionsWithAuth);
   }
 }

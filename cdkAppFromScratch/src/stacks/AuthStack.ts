@@ -3,7 +3,7 @@ import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
 import { Construct } from "constructs";
 
 export class AuthStack extends Stack {
-  private userPool: UserPool;
+  public userPool: UserPool;
   private userPoolClient: UserPoolClient;
 
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -13,7 +13,7 @@ export class AuthStack extends Stack {
     this.createUserPoolClient();
   }
 
-  // note: In order to create user pool, need user pool as well as user client
+  // note: In order to create user pool, need user pool as well as user client below
   private createUserPool() {
     this.userPool = new UserPool(this, "SpacesUserPool", {
       selfSignUpEnabled: true,
@@ -24,6 +24,7 @@ export class AuthStack extends Stack {
     });
 
     // Creates an CfnOutput value for this stack since we need userPoolId on connecting to this user pool
+    // output user id
     new CfnOutput(this, "SpacesUserPoolId", {
       value: this.userPool.userPoolId,
     });

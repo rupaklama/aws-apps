@@ -16,10 +16,11 @@ const lambdaStack = new LambdaStack(app, "LambdaStack", {
 });
 
 // auth stack
-new AuthStack(app, "AuthStack");
+const authStack = new AuthStack(app, "AuthStack");
 
 // Using API Gateway provides users with a secure HTTP endpoint to invoke your Lambda function
 // Config to link API Gateway stack to our lambda stack above
 new ApiStack(app, "ApiStack", {
   spacesLambdaIntegration: lambdaStack.spacesLambdaIntegration,
+  userPool: authStack.userPool,
 });
