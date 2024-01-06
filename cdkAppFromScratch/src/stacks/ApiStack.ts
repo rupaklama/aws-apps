@@ -26,13 +26,14 @@ export class ApiStack extends Stack {
     // Rest Api construct gateway
     const api = new RestApi(this, "SpacesApi");
 
-    // auth protected route: securing APIs with Cognito
+    // auth protected route: securing APIs with Cognito User pool
     const authorizer = new CognitoUserPoolsAuthorizer(this, "SpacesApiAuthorizer", {
       cognitoUserPools: [props.userPool],
       identitySource: "method.request.header.Authorization",
     });
     authorizer._attachToApi(api);
 
+    // passing above into all http calls in lambda below
     const optionsWithAuth: MethodOptions = {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {

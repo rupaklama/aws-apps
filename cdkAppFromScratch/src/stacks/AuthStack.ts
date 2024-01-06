@@ -1,5 +1,6 @@
 import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
-import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
+import { CfnUserPoolGroup, UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
+
 import { Construct } from "constructs";
 
 export class AuthStack extends Stack {
@@ -11,6 +12,7 @@ export class AuthStack extends Stack {
 
     this.createUserPool();
     this.createUserPoolClient();
+    this.createAdminsGroup();
   }
 
   // note: In order to create user pool, need user pool as well as user client below
@@ -42,6 +44,14 @@ export class AuthStack extends Stack {
 
     new CfnOutput(this, "SpacesUserPoolClientId", {
       value: this.userPoolClient.userPoolClientId,
+    });
+  }
+
+  // Cognito User Groups for providing different privileges for different users
+  private createAdminsGroup() {
+    new CfnUserPoolGroup(this, "SpaceAdmins", {
+      userPoolId: this.userPool.userPoolId,
+      groupName: "admins",
     });
   }
 }
