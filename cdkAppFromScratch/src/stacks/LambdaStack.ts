@@ -2,11 +2,12 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { ITable } from "aws-cdk-lib/aws-dynamodb";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Code, Runtime } from "aws-cdk-lib/aws-lambda";
+import { Code, Runtime, Function } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
 
+// to use the dynamo db table in Data stack in our lambda function
 interface LambdaStackProps extends StackProps {
   spacesTable: ITable;
 }
@@ -36,13 +37,16 @@ export class LambdaStack extends Stack {
       // same as above with regular aws node js lambda
       entry: join(__dirname, "..", "services", "spacesApi", "handler.ts"),
 
-      // note: lambda to access db table in Dynamo db
+      // note: lambda to access db table in Dynamo db in Data stack
+      // note: environment variables are used to pass data to the lambda function
       environment: {
+        // adding table name to node environment variables to access it in our code
         TABLE_NAME: props.spacesTable.tableName,
       },
     });
 
-    // spaces lambda has rights to write db
+    // set permissions policies for lambda to read/write to DynamoDB table
+    // note: permissions are set using IAM policy statement
     spacesLambda.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

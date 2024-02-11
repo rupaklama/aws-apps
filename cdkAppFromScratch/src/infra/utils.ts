@@ -8,9 +8,12 @@ export function getSuffixFromStack(stack: Stack) {
   return suffix;
 }
 
+// Check if the user has the admin group, only admin can do delete operation
+// note: APIGatewayProxyEvent is request object data and also contains authorizer info from user pool cognito
 export function hasAdminGroup(event: APIGatewayProxyEvent) {
   const groups = event.requestContext.authorizer?.claims["cognito:groups"];
 
+  // our 'admins' group in User pool of Cognito
   if (groups) {
     return (groups as string).includes("admins");
   }

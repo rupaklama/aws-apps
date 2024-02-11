@@ -1,0 +1,12 @@
+{
+  "DataStack": {
+    "ExportsOutputRefSpacesTable8A9973559FB4B87D": "SpacesTable",
+    "ExportsOutputFnGetAttSpacesTable8A997355Arn242927FE": "arn:aws:dynamodb:us-east-1:128337652553:table/SpacesTable"
+  },
+  "AuthStack": {
+    "SpacesIdentityPoolId": "us-east-1:1942eaab-fee3-4b17-a673-b1aaf7c8025c",
+    "ExportsOutputFnGetAttSpacesUserPool5D732F45ArnC2F0FFA7": "arn:aws:cognito-idp:us-east-1:128337652553:userpool/us-east-1_jBtjHQrsh",
+    "SpacesUserPoolClientId": "46hlmufmaadat1f1otd9prsc10",
+    "SpacesUserPoolId": "us-east-1_jBtjHQrsh"
+  }
+}

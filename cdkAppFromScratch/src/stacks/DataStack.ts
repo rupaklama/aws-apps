@@ -4,6 +4,7 @@ import { Construct } from "constructs";
 import { getSuffixFromStack } from "../infra/utils";
 
 // Application data to be store in Dynamo DB
+// note: this stack is to create a tables in dynamo db
 export class DataStack extends Stack {
   public readonly spacesTable: ITable;
 
@@ -12,6 +13,7 @@ export class DataStack extends Stack {
 
     const suffix = getSuffixFromStack(this);
 
+    // Need table name to use with Lambda function
     this.spacesTable = new Table(this, "SpacesTable", {
       // note: partition key - must have important property
       // The Primary Key in relation db is equivalent to the Partition Key in a single-field-key table.
@@ -22,7 +24,8 @@ export class DataStack extends Stack {
         type: AttributeType.STRING,
       },
 
-      // table name should be unique so to avoid issues
+      // table name should be unique so to avoid issues use above getSuffixFromStack
+      // tableName: `SpacesTable-${suffix}`,
       tableName: "SpacesTable",
     });
   }

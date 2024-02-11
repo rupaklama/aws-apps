@@ -4,6 +4,7 @@ import {
   CognitoUserPoolsAuthorizer,
   LambdaIntegration,
   MethodOptions,
+  ResourceOptions,
   RestApi,
 } from "aws-cdk-lib/aws-apigateway";
 import { IUserPool } from "aws-cdk-lib/aws-cognito";
@@ -13,9 +14,12 @@ import { Construct } from "constructs";
 // API Gateway provides tools for creating and documenting web APIs that route HTTP requests to Lambda functions.
 // Using API Gateway provides users with a secure HTTP endpoint to invoke your Lambda function and can help manage large volumes of calls to your function by throttling traffic and automatically validating and authorizing API calls.
 
-// custom interface since this stack will be accessing shared data in Lambda Stack using cdk props
+// custom interface since this stack will be accessing Lambda Stack using cdk props
 interface ApiStackProps extends StackProps {
   spacesLambdaIntegration: LambdaIntegration;
+
+  // note: this value needs to be public to be accessed by our API stack for security
+  // Only Cognito auth & authorized user can access the API
   userPool: IUserPool;
 }
 
@@ -29,7 +33,7 @@ export class ApiStack extends Stack {
     // auth protected route: securing APIs with Cognito User pool
     const authorizer = new CognitoUserPoolsAuthorizer(this, "SpacesApiAuthorizer", {
       cognitoUserPools: [props.userPool],
-      identitySource: "method.request.header.Authorization",
+      identitySource: "method.request.header.Authorization", // jwt
     });
     authorizer._attachToApi(api);
 
@@ -41,9 +45,18 @@ export class ApiStack extends Stack {
       },
     };
 
+    // enabling cors for our API
+    const optionsWithCors: ResourceOptions = {
+      defaultCorsPreflightOptions: {
+        allowOrigins: ["*"], // Cors.ALL_ORIGINS
+        allowMethods: ["GET", "POST", "PUT", "DELETE"], // Cors.ALL_METHODS
+        allowHeaders: ["*"],
+      },
+    };
+
     // 'root' - Represents the root resource of this API endpoint ('/').
     // Resources and Methods are added to this resource '/spaces'
-    const spacesResources = api.root.addResource("spaces");
+    const spacesResources = api.root.addResource("spaces", optionsWithCors);
 
     // config to link to our lambda
     spacesResources.addMethod("GET", props.spacesLambdaIntegration, optionsWithAuth);

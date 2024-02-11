@@ -5,12 +5,16 @@ import { handler } from "../src/services/spacesApi/handler";
 // must be selected while launching vscode debugger.
 // Calling these functions in our project modules to debug here.
 
+process.env.TABLE_NAME = "spacesTable";
+process.env.AWS_REGION = "us-east-1";
+
 handler(
   // post api call
   {
     httpMethod: "POST",
     body: JSON.stringify({
-      location: "San Francisco city",
+      name: "Kathmandu",
+      location: "Kathmandu city",
     }),
   } as any,
   {} as any

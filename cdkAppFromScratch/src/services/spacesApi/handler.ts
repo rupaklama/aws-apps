@@ -6,6 +6,7 @@ import { getSpaces } from "./GetSpaces";
 import { updateSpace } from "./UpdateSpace";
 import { deleteSpace } from "./DeleteSpace";
 import { JSONError, MissingFieldError } from "../shared/DataValidator";
+import { addCorsHeader } from "../shared/utils";
 
 // note: Very import thing is that when we are working with AWS DynamoDB is that the
 // DynamoDB Client should be initialize in outer scope of http methods as a good practice
@@ -24,19 +25,23 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
       case "GET":
         // message = "Hello from GET!";
         const getResponse = await getSpaces(event, dynamoDBClient);
+        addCorsHeader(getResponse);
         return getResponse;
 
       case "POST":
         // message = "Hello from POST!";
         const postResponse = await postSpaces(event, dynamoDBClient);
+        addCorsHeader(postResponse);
         return postResponse;
 
       case "PUT":
         const putResponse = await updateSpace(event, dynamoDBClient);
+        addCorsHeader(putResponse);
         return putResponse;
 
       case "DELETE":
         const deleteResponse = await deleteSpace(event, dynamoDBClient);
+        addCorsHeader(deleteResponse);
         return deleteResponse;
 
       default:
