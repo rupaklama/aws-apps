@@ -6,7 +6,7 @@ import stackOutputs from "../outputs.json";
 
 const awsRegion = "us-east-1";
 
-// Test Auth Service with Amplify
+// Accessing Auth Service with Amplify
 Amplify.configure({
   Auth: {
     mandatorySignIn: false,
