@@ -1,8 +1,8 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { AttributeType, ITable, Table } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 import { getSuffixFromStack } from "../infra/utils";
-import { Bucket, HttpMethods, IBucket } from "aws-cdk-lib/aws-s3";
+import { Bucket, HttpMethods, IBucket, ObjectOwnership } from "aws-cdk-lib/aws-s3";
 
 // Application data to be store in Dynamo DB
 // note: this stack is to create a tables in dynamo db
@@ -31,9 +31,10 @@ export class DataStack extends Stack {
       tableName: "SpacesTable",
     });
 
+    // Bucket to hold images
     this.photosBucket = new Bucket(this, "SpacesPhotosBucket", {
       bucketName: `spaces-photos-bucket-${suffix}`,
-      // note: cors access on calling sdk
+      // note: cors access on calling sdk using http methods
       cors: [
         {
           allowedOrigins: ["*"],
@@ -41,7 +42,8 @@ export class DataStack extends Stack {
           allowedHeaders: ["*"],
         },
       ],
-      // accessControl: BucketAccessControl.PUBLIC_READ, - not working now in future, alternate below is used
+      objectOwnership: ObjectOwnership.OBJECT_WRITER,
+      // accessControl: BucketAccessControl.PUBLIC_READ, - not working now but in future, alternate below is used
       // This way our bucket will hold public files and we can access them from the browser
       blockPublicAccess: {
         blockPublicAcls: false,
@@ -49,6 +51,10 @@ export class DataStack extends Stack {
         ignorePublicAcls: false,
         restrictPublicBuckets: false,
       },
+    });
+
+    new CfnOutput(this, "SpacesPhotosBucketName", {
+      value: this.photosBucket.bucketName,
     });
   }
 }

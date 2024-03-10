@@ -19,7 +19,9 @@ const lambdaStack = new LambdaStack(app, "LambdaStack", {
 });
 
 // auth stack
-const authStack = new AuthStack(app, "AuthStack");
+const authStack = new AuthStack(app, "AuthStack", {
+  photosBucket: dataStack.photosBucket,
+});
 
 // Using API Gateway provides users with a secure HTTP endpoint to invoke your Lambda function
 // Config to link API Gateway stack to our lambda stack above

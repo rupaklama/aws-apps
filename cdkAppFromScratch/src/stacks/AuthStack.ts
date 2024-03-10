@@ -8,8 +8,13 @@ import {
 } from "aws-cdk-lib/aws-cognito";
 
 import { Effect, FederatedPrincipal, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
+import { IBucket } from "aws-cdk-lib/aws-s3";
 
 import { Construct } from "constructs";
+
+interface AuthStackProps extends StackProps {
+  photosBucket: IBucket;
+}
 
 export class AuthStack extends Stack {
   // User pool for authentication
@@ -26,14 +31,14 @@ export class AuthStack extends Stack {
   // admin role to list all the buckets using IAM temp credentials
   private adminRole: Role;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props?: AuthStackProps) {
     super(scope, id, props);
 
     this.createUserPool();
     this.createUserPoolClient();
 
     this.createIdentityPool();
-    this.createIdentityRoles();
+    this.createIdentityRoles(props.photosBucket);
     this.attachIdentityRoles();
 
     // create this at the end to avoid compilation issues
@@ -108,7 +113,7 @@ export class AuthStack extends Stack {
     });
   }
 
-  private createIdentityRoles() {
+  private createIdentityRoles(photosBucket: IBucket) {
     // note: Must need to create roles for authenticated & unauthenticated users in identity pool
     // note: Extra role for admin users if needed
     this.authenticatedRole = new Role(this, "CognitoDefaultAuthenticatedRole", {
@@ -154,16 +159,17 @@ export class AuthStack extends Stack {
       ),
     });
 
-    // note: admin role to list all the buckets using IAM temp credentials
+    // note: admin role to list & perform any actions inside this bucket
     this.adminRole.addToPolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
-          // "s3:PutObject", "s3:PutObjectAcl"
-          "s3:ListAllMyBuckets",
+          "s3:PutObject",
+          "s3:PutObjectAcl",
+          // "s3:ListAllMyBuckets",
         ],
-        resources: ["*"], // all
-        //  resources: [photosBucket.bucketArn + "/*"],
+        // resources: ["*"], // all
+        resources: [photosBucket.bucketArn + "/*"],
       })
     );
   }
